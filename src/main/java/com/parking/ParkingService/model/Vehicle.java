@@ -27,6 +27,7 @@ public class Vehicle {
         this.vehicleNumber=vehicleDTO.getVehicleNumber();
         this.color=vehicleDTO.getColor();
         this.model=vehicleDTO.getModel();
+
     }
 
 }

@@ -1,5 +1,6 @@
 package com.parking.ParkingService.model;
 
+import com.parking.ParkingService.dto.SlotDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,4 +18,9 @@ public class Slot {
     private ParkingLot parkingLot;
     @OneToOne(mappedBy = "slot")
     private Vehicle vehicle;
+
+    public Slot(SlotDTO slotDTO){
+        this.slotNumber= slotDTO.getSlotNumber();
+
+    }
 }

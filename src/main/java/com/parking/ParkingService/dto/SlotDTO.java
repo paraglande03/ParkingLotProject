@@ -7,11 +7,11 @@ import lombok.ToString;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor@ToString
-public class VehicleDTO {
+@AllArgsConstructor
+@ToString
+public class SlotDTO {
 
-    private String vehicleNumber;
-    private String color;
-    private String model;
-    private String slotId;
+    private String parkingLotNum;
+    private String slotNumber;
+
 }
