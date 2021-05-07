@@ -1,5 +1,6 @@
 package com.parking.ParkingService.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.parking.ParkingService.dto.ParkingLotDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,8 +21,13 @@ public class ParkingLot {
     @Id
     public Integer parkingLotId;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "parkingLot")
     public List<Slot> slots;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "parkingLot")
+    public List<Vehicle> vehicles;
 
     public ParkingLot(ParkingLotDTO parkingLotDTO){
         this.parkingLotId= parkingLotDTO.lotId;

@@ -7,9 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
@@ -24,6 +22,9 @@ public class Vehicle {
 
     @OneToOne
     private Slot slot;
+
+    @ManyToOne
+    private ParkingLot parkingLot;
 
 
 

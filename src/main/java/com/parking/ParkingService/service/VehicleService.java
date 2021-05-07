@@ -2,8 +2,10 @@ package com.parking.ParkingService.service;
 
 import com.parking.ParkingService.dto.SlotDTO;
 import com.parking.ParkingService.dto.VehicleDTO;
+import com.parking.ParkingService.model.ParkingLot;
 import com.parking.ParkingService.model.Slot;
 import com.parking.ParkingService.model.Vehicle;
+import com.parking.ParkingService.repository.ParkingLotRepository;
 import com.parking.ParkingService.repository.SlotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,9 @@ public class VehicleService  implements IVehicleService{
    @Autowired
    private SlotRepository slotRepository;
 
+   @Autowired
+   private ParkingLotRepository parkingLotRepository;
+
 
 
    @Override
@@ -31,6 +36,10 @@ public class VehicleService  implements IVehicleService{
 
       Slot slot=slotRepository.findById(vehicleDTO.getSlotId()).orElseThrow();
       vehicle.setSlot(slot);
+
+      ParkingLot parkingLot =parkingLotRepository.findById(vehicleDTO.getLotId()).orElseThrow();
+      vehicle.setParkingLot(parkingLot);
+
       return vehicleRepository.save(vehicle);
    }
 
