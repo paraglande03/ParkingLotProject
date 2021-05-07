@@ -7,4 +7,5 @@ public interface IVehicleService {
 
     public Vehicle addVehicle(VehicleDTO vehicleDTO);
 
+    public Vehicle unParkVehicle(String vehicleNumber);
 }

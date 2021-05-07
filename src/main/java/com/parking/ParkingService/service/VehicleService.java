@@ -43,6 +43,12 @@ public class VehicleService  implements IVehicleService{
       return vehicleRepository.save(vehicle);
    }
 
+   @Override
+   public Vehicle unParkVehicle(String vehicleNumber) {
+      vehicleRepository.deleteById(vehicleNumber);
+      return null;
+   }
+
 }
 
 
