@@ -24,8 +24,6 @@ public class ParkingLotController {
         ResponseDto responseDto=new ResponseDto("Added parking lot",parkingLotService.addParkingLot(parkingLotDTO));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
 
-
-
     }
 
 
