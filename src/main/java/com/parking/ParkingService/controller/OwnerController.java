@@ -36,6 +36,13 @@ public class OwnerController {
         return  new   ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
 
+    @DeleteMapping("/unpark/{vehicleNumber}")
+    public ResponseEntity<ResponseDto> unparkCar(@PathVariable("vehicleNumber") String vehicleNumber){
+
+        ResponseDto responseDto = new ResponseDto("Car Is Unparked!",vehicleService.unParkVehicle(vehicleNumber));
+
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 
 
 }
