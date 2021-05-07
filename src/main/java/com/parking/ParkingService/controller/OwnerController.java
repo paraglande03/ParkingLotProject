@@ -41,7 +41,7 @@ public class OwnerController {
 
     }
 
-    @PostMapping("/add")
+    @PostMapping("/add/slot")
     public ResponseEntity<ResponseDto> addSlot(@RequestBody SlotDTO slotDTO){
 
         ResponseDto responseDto=new ResponseDto("added new slot",slotService.addSlot(slotDTO));
