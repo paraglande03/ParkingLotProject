@@ -1,5 +1,6 @@
 package com.parking.ParkingService.model;
 
+import com.parking.ParkingService.dto.ParkingLotDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,9 +18,14 @@ import java.util.List;
 @Entity
 public class ParkingLot {
     @Id
-    public int lotId;
-    public String lotName;
+    public Integer parkingLotId;
+
     @OneToMany(mappedBy = "parkingLot")
     public List<Slot> slots;
+
+    public ParkingLot(ParkingLotDTO parkingLotDTO){
+        this.parkingLotId= parkingLotDTO.lotId;
+
+    }
 
 }

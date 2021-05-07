@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class SlotDTO {
 
-    private String parkingLotNum;
+    private Integer parkingLotNum;
     private String slotNumber;
 
 }

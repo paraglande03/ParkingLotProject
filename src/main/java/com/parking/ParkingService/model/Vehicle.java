@@ -1,5 +1,6 @@
 package com.parking.ParkingService.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.parking.ParkingService.dto.VehicleDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,8 +21,11 @@ public class Vehicle {
     private String vehicleNumber;
     private String color;
     private String model;
+
     @OneToOne
     private Slot slot;
+
+
 
     public Vehicle(VehicleDTO vehicleDTO){
         this.vehicleNumber=vehicleDTO.getVehicleNumber();

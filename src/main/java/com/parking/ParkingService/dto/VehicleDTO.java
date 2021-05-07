@@ -14,4 +14,5 @@ public class VehicleDTO {
     private String color;
     private String model;
     private String slotId;
+    private String lotId;
 }
