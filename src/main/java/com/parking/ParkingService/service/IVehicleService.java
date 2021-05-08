@@ -6,11 +6,13 @@ import com.parking.ParkingService.model.Vehicle;
 
 public interface IVehicleService {
 
-    public Vehicle addVehicle(VehicleDTO vehicleDTO);
+     Vehicle addVehicle(VehicleDTO vehicleDTO);
 
-    public Vehicle unParkVehicle(String vehicleNumber);
+     Vehicle unParkVehicle(String vehicleNumber);
 
-    public ResponseDto checkFull();
+     ResponseDto checkFull();
 
-    public ResponseDto findVehicle(String vehicleId);
+     ResponseDto findVehicle(String vehicleId);
+
+    ResponseDto parkingCharge(String vehicleId);
 }

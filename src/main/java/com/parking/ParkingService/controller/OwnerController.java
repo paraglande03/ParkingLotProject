@@ -78,7 +78,7 @@ public class OwnerController {
 
     @GetMapping("/charge/{vehicleId}")
     public ResponseEntity<ResponseDto> parkingCharge(@PathVariable("vehicleId") String vehicleId){
-        ResponseDto responseDto = new ResponseDto("Total parking time is : ", vehicleService.parkingCharge());
+        ResponseDto responseDto = new ResponseDto("Total parking time is : ", vehicleService.parkingCharge(vehicleId));
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
 
 
