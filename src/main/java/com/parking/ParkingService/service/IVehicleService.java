@@ -11,4 +11,6 @@ public interface IVehicleService {
     public Vehicle unParkVehicle(String vehicleNumber);
 
     public ResponseDto checkFull();
+
+    public ResponseDto findVehicle(String vehicleId);
 }

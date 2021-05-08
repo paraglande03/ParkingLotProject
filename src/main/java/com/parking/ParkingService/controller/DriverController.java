@@ -29,4 +29,10 @@ public class DriverController {
         ResponseDto responseDto=new ResponseDto("Vehicle Parked in Lot "+vehicleDTO.getLotId()+" slot "+ vehicleDTO.getSlotId() ,vehicleService.addVehicle(vehicleDTO));
         return  new   ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
+
+    @GetMapping("/find/{vehicleId}")
+    public ResponseEntity<ResponseDto> findVehicle(@PathVariable("vehicleId") String vehicleId){
+        ResponseDto responseDto =new ResponseDto(" Your vehicle is parked Here: ",vehicleService.findVehicle(vehicleId));
+        return new ResponseEntity<>(responseDto,HttpStatus.OK);
+    }
 }

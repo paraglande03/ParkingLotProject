@@ -1,7 +1,6 @@
 package com.parking.ParkingService.service;
 
 import com.parking.ParkingService.dto.ResponseDto;
-import com.parking.ParkingService.dto.SlotDTO;
 import com.parking.ParkingService.dto.VehicleDTO;
 import com.parking.ParkingService.model.ParkingLot;
 import com.parking.ParkingService.model.Slot;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.parking.ParkingService.repository.VehicleRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VehicleService  implements IVehicleService{
@@ -59,6 +59,17 @@ public class VehicleService  implements IVehicleService{
          return new ResponseDto("Parking lot has slots empty!");
       }
 
+   }
+
+   @Override
+   public ResponseDto findVehicle(String vehicleId) {
+
+      int lot= vehicleRepository.findById(vehicleId).orElseThrow().getParkingLot().getParkingLotId();
+      String slot=vehicleRepository.findById(vehicleId).orElseThrow().getSlot().getSlotNumber();
+
+      ResponseDto responseDto = new ResponseDto("Parking lot number:"+lot+" Slot number :" +slot)      ;
+
+      return responseDto;
    }
 
 }
