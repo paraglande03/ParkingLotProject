@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/airportsecurity")
 public class AirportSecurityController {
 
-//    @Autowired
-//    private VehicleService vehicleService;
+    @Autowired
+    private VehicleService vehicleService;
 
     @GetMapping("/checkfull")
     public ResponseEntity<ResponseDto> checkFull(){
