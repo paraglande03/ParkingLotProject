@@ -93,6 +93,14 @@ public class VehicleService  implements IVehicleService{
 
    }
 
+   @Override
+   public List<Vehicle> findByColor(String color) {
+
+     List<Vehicle> vehicles = vehicleRepository.findByColor(color);
+
+      return vehicles;
+   }
+
 }
 
 

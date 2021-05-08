@@ -4,6 +4,8 @@ import com.parking.ParkingService.dto.ResponseDto;
 import com.parking.ParkingService.dto.VehicleDTO;
 import com.parking.ParkingService.model.Vehicle;
 
+import java.util.List;
+
 public interface IVehicleService {
 
      Vehicle addVehicle(VehicleDTO vehicleDTO);
@@ -15,4 +17,6 @@ public interface IVehicleService {
      ResponseDto findVehicle(String vehicleId);
 
     ResponseDto parkingCharge(String vehicleId);
+
+   List<Vehicle>  findByColor(String color);
 }
