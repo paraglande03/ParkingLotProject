@@ -70,5 +70,11 @@ public class OwnerController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    @GetMapping("/checkfull")
+    public  ResponseEntity<ResponseDto> checkFull(){
+        ResponseDto responseDto = new ResponseDto("Parking Lot Status: ", vehicleService.checkFull());
+        return new ResponseEntity<>(responseDto,HttpStatus.OK);
+    }
+
 
 }

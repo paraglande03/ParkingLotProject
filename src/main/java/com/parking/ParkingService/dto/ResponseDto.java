@@ -15,4 +15,8 @@ public class ResponseDto {
 
     private Object data;
 
+    public ResponseDto(String message){
+        this.message=message;
+    }
+
 }

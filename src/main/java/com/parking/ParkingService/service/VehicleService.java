@@ -1,5 +1,6 @@
 package com.parking.ParkingService.service;
 
+import com.parking.ParkingService.dto.ResponseDto;
 import com.parking.ParkingService.dto.SlotDTO;
 import com.parking.ParkingService.dto.VehicleDTO;
 import com.parking.ParkingService.model.ParkingLot;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.parking.ParkingService.repository.VehicleRepository;
+
+import java.util.List;
 
 @Service
 public class VehicleService  implements IVehicleService{
@@ -29,9 +32,6 @@ public class VehicleService  implements IVehicleService{
    @Override
    public Vehicle addVehicle(VehicleDTO vehicleDTO ){
 
-
-
-
       Vehicle vehicle = new Vehicle(vehicleDTO);
 
       Slot slot=slotRepository.findById(vehicleDTO.getSlotId()).orElseThrow();
@@ -47,6 +47,18 @@ public class VehicleService  implements IVehicleService{
    public Vehicle unParkVehicle(String vehicleNumber) {
       vehicleRepository.deleteById(vehicleNumber);
       return null;
+   }
+
+   @Override
+   public ResponseDto checkFull() {
+      List<Vehicle> vehicles = vehicleRepository.findAll();
+      if (vehicles.size()>=4){
+         return new ResponseDto("Parking lot is full!");
+      }
+      else {
+         return new ResponseDto("Parking lot has slots empty!");
+      }
+
    }
 
 }
