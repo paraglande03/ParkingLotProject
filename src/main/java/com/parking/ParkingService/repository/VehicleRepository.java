@@ -16,4 +16,6 @@ public interface VehicleRepository extends JpaRepository<Vehicle, String> {
     @Query(value = " select * from vehicle where color = :color and model = :make",nativeQuery = true)
     List<Vehicle> findByParam(String color,String make);
 
+    
+
 }

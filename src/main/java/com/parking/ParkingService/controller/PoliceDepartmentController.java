@@ -26,4 +26,9 @@ public class PoliceDepartmentController {
     }
 
 
+    @GetMapping("/find/model/{make}")
+    public ResponseEntity<ResponseDto> findByModel(@PathVariable("color") String make){
+        ResponseDto responseDto = new ResponseDto(make+" cars parked are : ", vehicleService.findByModel(make));
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 }

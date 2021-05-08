@@ -106,6 +106,14 @@ public class VehicleService  implements IVehicleService{
       List<Vehicle> vehicles = vehicleRepository.findByParam(color,make);
       return vehicles;
    }
+   @Override
+   public List<Vehicle> findByModel(String make) {
+
+      List<Vehicle> vehicles = vehicleRepository.findByModel(make);
+
+      return vehicles;
+   }
+
 
 }
 

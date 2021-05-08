@@ -21,4 +21,6 @@ public interface IVehicleService {
    List<Vehicle>  findByColor(String color);
 
     List<Vehicle>  findByParam(String color, String make);
+
+    List<Vehicle>  findByModel(String make);
 }
