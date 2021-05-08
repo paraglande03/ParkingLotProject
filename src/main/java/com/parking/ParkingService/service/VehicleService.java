@@ -107,9 +107,9 @@ public class VehicleService  implements IVehicleService{
       return vehicles;
    }
    @Override
-   public List<Vehicle> findByModel(String make) {
+   public List<Vehicle> findByModel(String model) {
 
-      List<Vehicle> vehicles = vehicleRepository.findByModel(make);
+      List<Vehicle> vehicles = vehicleRepository.findByModel(model);
 
       return vehicles;
    }
