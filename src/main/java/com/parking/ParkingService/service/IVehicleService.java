@@ -4,6 +4,7 @@ import com.parking.ParkingService.dto.ResponseDto;
 import com.parking.ParkingService.dto.VehicleDTO;
 import com.parking.ParkingService.model.Vehicle;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IVehicleService {
@@ -23,4 +24,6 @@ public interface IVehicleService {
     List<Vehicle>  findByParam(String color, String make);
 
     List<Vehicle>  findByModel(String model);
+
+    List<Vehicle> getCarsByTime(LocalDateTime compareTime);
 }

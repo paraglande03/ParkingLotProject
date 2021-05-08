@@ -4,7 +4,9 @@ import com.parking.ParkingService.model.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
 
 public interface VehicleRepository extends JpaRepository<Vehicle, String> {
 
@@ -18,6 +20,11 @@ public interface VehicleRepository extends JpaRepository<Vehicle, String> {
 
     @Query(value = " select * from vehicle where model = :model ",nativeQuery = true)
     List<Vehicle> findByModel(String model);
-    
+
+
+    @Query(value = " select * from vehicle  v where v.in_time >= compareTime",nativeQuery = true)
+    List<Vehicle> getCarsByTime( LocalDateTime compareTime);
+
+
 
 }

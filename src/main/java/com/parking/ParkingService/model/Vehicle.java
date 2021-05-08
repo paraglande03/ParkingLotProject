@@ -24,8 +24,7 @@ public class Vehicle {
     private String color;
     private String model;
 
-//    @Temporal(value = TemporalType.TIMESTAMP)
-//    @Column(name= "in_time", nullable = false)
+
     @CreationTimestamp
     private LocalDateTime inTime;
 

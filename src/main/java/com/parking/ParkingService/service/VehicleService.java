@@ -13,10 +13,14 @@ import org.springframework.stereotype.Service;
 import com.parking.ParkingService.repository.VehicleRepository;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class VehicleService  implements IVehicleService{
@@ -112,6 +116,21 @@ public class VehicleService  implements IVehicleService{
       List<Vehicle> vehicles = vehicleRepository.findByModel(model);
 
       return vehicles;
+   }
+
+   @Override
+   public List<Vehicle> getCarsByTime(LocalDateTime minutes) {
+
+
+      List<Vehicle> vehicles = vehicleRepository.getCarsByTime(minutes);
+
+
+
+
+
+      return vehicles;
+
+
    }
 
 

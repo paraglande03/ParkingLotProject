@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/police")
 public class PoliceDepartmentController {
@@ -31,4 +33,14 @@ public class PoliceDepartmentController {
         ResponseDto responseDto = new ResponseDto(model+" cars parked are : ", vehicleService.findByModel(model));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
+    @GetMapping("/time/{minutes}")
+    public ResponseEntity<ResponseDto> unparkCar(@PathVariable("minutes") LocalDateTime minutes){
+
+        ResponseDto responseDto = new ResponseDto("Cars parked in "+ minutes+" minutes are :",vehicleService.getCarsByTime(minutes));
+
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+
 }
