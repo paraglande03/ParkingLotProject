@@ -6,8 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -19,6 +23,11 @@ public class Vehicle {
     private String vehicleNumber;
     private String color;
     private String model;
+
+//    @Temporal(value = TemporalType.TIMESTAMP)
+//    @Column(name= "in_time", nullable = false)
+    @CreationTimestamp
+    private LocalDateTime inTime;
 
     @OneToOne
     private Slot slot;
