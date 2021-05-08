@@ -5,10 +5,7 @@ import com.parking.ParkingService.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/police")
@@ -21,5 +18,12 @@ public class PoliceDepartmentController {
         ResponseDto responseDto = new ResponseDto(color+" cars parked are : ", vehicleService.findByColor(color));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
+    @GetMapping("/find")
+    public ResponseEntity<ResponseDto> findByParam(@RequestParam ("color") String color,@RequestParam ("make") String make){
+        ResponseDto responseDto = new ResponseDto(color +" "+make +" cars parked are : ", vehicleService.findByParam(color,make));
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
 
 }

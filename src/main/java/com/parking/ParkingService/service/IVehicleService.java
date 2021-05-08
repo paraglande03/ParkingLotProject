@@ -19,4 +19,6 @@ public interface IVehicleService {
     ResponseDto parkingCharge(String vehicleId);
 
    List<Vehicle>  findByColor(String color);
+
+    List<Vehicle>  findByParam(String color, String make);
 }
