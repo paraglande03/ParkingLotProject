@@ -27,7 +27,7 @@ public class Vehicle {
 //    @Temporal(value = TemporalType.TIMESTAMP)
 //    @Column(name= "in_time", nullable = false)
     @CreationTimestamp
-    private LocalDateTime inTime;
+    private LocalTime inTime;
 
     @OneToOne
     private Slot slot;

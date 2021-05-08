@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import com.parking.ParkingService.repository.VehicleRepository;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,7 +75,26 @@ public class VehicleService  implements IVehicleService{
       return responseDto;
    }
 
+   @Override
+   public ResponseDto parkingCharge(String vehicleId) {
+//      LocalTime time = LocalTime.now();
+//
+//      int minute = ((vehicleRepository.findById(vehicleId).orElseThrow().getInTime().getMinute())-(time.getMinute()));
+//      int sec= ((vehicleRepository.findById(vehicleId).orElseThrow().getInTime().getSecond())-(time.getSecond()));
+//
+//      return new ResponseDto(minute+" minutes " +sec+" seconds");
+
+
+      LocalTime time1 =  vehicleRepository.findById(vehicleId).orElseThrow().getInTime();
+      LocalTime time2 = LocalTime.now();
+
+      int minutes = time1.getMinute()-time2.getMinute();
+      int sec = time1.getSecond()-time2.getSecond();
+      return new ResponseDto(minutes+" minutes " +sec+" seconds");
+   }
+
 }
 
 
-
+//-(time.getSecond())
+//        -(time.getMinute())
