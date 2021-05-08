@@ -77,24 +77,22 @@ public class VehicleService  implements IVehicleService{
 
    @Override
    public ResponseDto parkingCharge(String vehicleId) {
-//      LocalTime time = LocalTime.now();
-//
-//      int minute = ((vehicleRepository.findById(vehicleId).orElseThrow().getInTime().getMinute())-(time.getMinute()));
-//      int sec= ((vehicleRepository.findById(vehicleId).orElseThrow().getInTime().getSecond())-(time.getSecond()));
-//
-//      return new ResponseDto(minute+" minutes " +sec+" seconds");
+      LocalTime time = LocalTime.now();
+
+      int parkedHr = vehicleRepository.findById(vehicleId).orElseThrow().getInTime().getHour();
+      int parkedTime= (parkedHr*60)+(vehicleRepository.findById(vehicleId).orElseThrow().getInTime().getMinute());
+
+      int unparkHr = time.getHour()*60;
+
+      int unparkTime= unparkHr+time.getMinute();
+
+      int totalparkedTime = unparkTime-parkedTime;
+
+      return new ResponseDto(totalparkedTime+" minutes!" );
 
 
-      LocalTime time1 =  vehicleRepository.findById(vehicleId).orElseThrow().getInTime();
-      LocalTime time2 = LocalTime.now();
-
-      int minutes = time1.getMinute()-time2.getMinute();
-      int sec = time1.getSecond()-time2.getSecond();
-      return new ResponseDto(minutes+" minutes " +sec+" seconds");
    }
 
 }
 
 
-//-(time.getSecond())
-//        -(time.getMinute())
