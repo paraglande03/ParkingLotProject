@@ -14,4 +14,9 @@ import java.util.NoSuchElementException;
 public class ExcwptionHandler {
 
 
+    @ExceptionHandler(JpaSystemException.class)
+    public ResponseEntity<ResponseDto> twoOrMoreAssigningException(JpaSystemException exception){
+        ResponseDto responseDto =new ResponseDto("Slot is already occupied! ");
+        return  new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 }
