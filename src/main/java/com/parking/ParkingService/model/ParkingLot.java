@@ -25,8 +25,9 @@ public class ParkingLot {
     @OneToMany(mappedBy = "parkingLot")
     public List<Slot> slots;
 
-    @JsonIgnore
+
     @OneToMany(mappedBy = "parkingLot")
+    @JsonIgnore
     public List<Vehicle> vehicles;
 
     public ParkingLot(ParkingLotDTO parkingLotDTO){

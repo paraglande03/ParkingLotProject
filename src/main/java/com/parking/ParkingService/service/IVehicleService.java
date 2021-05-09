@@ -25,5 +25,5 @@ public interface IVehicleService {
 
     List<Vehicle>  findByModel(String model);
 
-    List<Vehicle> getCarsByTime(LocalDateTime compareTime);
+    List<Vehicle> getCarsByTime(int compareTime);
 }

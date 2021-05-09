@@ -35,7 +35,7 @@ public class PoliceDepartmentController {
     }
 
     @GetMapping("/time/{minutes}")
-    public ResponseEntity<ResponseDto> unparkCar(@PathVariable("minutes") LocalDateTime minutes){
+    public ResponseEntity<ResponseDto> findCarParkedInTime(@PathVariable("minutes") int minutes){
 
         ResponseDto responseDto = new ResponseDto("Cars parked in "+ minutes+" minutes are :",vehicleService.getCarsByTime(minutes));
 
