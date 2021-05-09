@@ -26,4 +26,11 @@ public class ExcwptionHandler {
         ResponseDto responseDto =new ResponseDto("Error : ");
         return  new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ResponseDto> noSuchValue(NoSuchElementException exception){
+        ResponseDto responseDto =new ResponseDto("Please Enter valid Number ");
+        return  new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 }
