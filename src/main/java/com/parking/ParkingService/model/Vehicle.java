@@ -25,8 +25,13 @@ public class Vehicle {
     private String model;
 
 
+    @Enumerated(value = EnumType.STRING)
+    private CarType carType;
+
+
     @CreationTimestamp
     private LocalDateTime inTime;
+
 
     @OneToOne
     private Slot slot;
@@ -40,6 +45,7 @@ public class Vehicle {
         this.vehicleNumber=vehicleDTO.getVehicleNumber();
         this.color=vehicleDTO.getColor();
         this.model=vehicleDTO.getModel();
+        this.carType=vehicleDTO.getCarType();
 
     }
 
