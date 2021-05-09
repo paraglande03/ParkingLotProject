@@ -19,4 +19,11 @@ public class ExcwptionHandler {
         ResponseDto responseDto =new ResponseDto("Slot is already occupied! ");
         return  new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
+
+    @ExceptionHandler(ParkingServiceException.class)
+    public ResponseEntity<ResponseDto> incorrectIdException(ParkingServiceException exception){
+        ResponseDto responseDto =new ResponseDto("Error : ");
+        return  new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 }
