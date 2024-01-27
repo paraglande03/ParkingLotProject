@@ -5,6 +5,7 @@ import com.parking.ParkingService.dto.ParkingLotDTO;
 import com.parking.ParkingService.dto.ResponseDto;
 import com.parking.ParkingService.dto.SlotDTO;
 import com.parking.ParkingService.dto.VehicleDTO;
+import com.parking.ParkingService.model.ParkingLot;
 import com.parking.ParkingService.model.Vehicle;
 import com.parking.ParkingService.service.OwnerService;
 import com.parking.ParkingService.service.ParkingLotService;
@@ -16,9 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/owner")
+@CrossOrigin(value = "*")
 public class OwnerController {
 
     @Autowired
@@ -33,21 +36,19 @@ public class OwnerController {
     @Autowired
     private SlotService slotService;
 
-    @PostMapping("/add/parkinglot")
+    // CRUDs For Parking Spaces
+    @PostMapping("/parkinglot")
     public ResponseEntity<ResponseDto> addParkingLot(@RequestBody ParkingLotDTO parkingLotDTO){
-
         ResponseDto responseDto=new ResponseDto("Added parking lot",parkingLotService.addParkingLot(parkingLotDTO));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
-
     }
 
-    @PostMapping("/add/slot")
-    public ResponseEntity<ResponseDto> addSlot(@RequestBody SlotDTO slotDTO){
-
-        ResponseDto responseDto=new ResponseDto("added new slot",slotService.addSlot(slotDTO));
-        return  new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
-
+    @DeleteMapping("/parkinglot")
+    public ResponseEntity<Object> deleteParkingLot( @RequestParam("id") int id){
+        parkingLotService.deleteParkingLot(id);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
+
 
     @GetMapping("/vehicle/all")
     public ResponseEntity<ResponseDto> allVehicles(){
@@ -55,18 +56,30 @@ public class OwnerController {
         return new ResponseEntity<ResponseDto>(responseDto,HttpStatus.OK);
     }
 
-    @PostMapping("/park")
+    @PostMapping("/entry")
     public ResponseEntity<ResponseDto> parkVehicle(@RequestBody VehicleDTO vehicleDTO){
 
-        ResponseDto responseDto=new ResponseDto("Vehicle Parked in Lot "+vehicleDTO.getLotId()+" slot "+ vehicleDTO.getSlotId() ,vehicleService.addVehicle(vehicleDTO));
-        return  new   ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+        Vehicle vehicle = vehicleService.addVehicle(vehicleDTO);
+        ResponseDto responseDto;
+        if(Objects.isNull(vehicle)){
+            responseDto=new ResponseDto("Sorry Currently there are no parking spaces left " ,"Lava Kuthapn");
+        }
+        else {
+            responseDto=new ResponseDto("Vehicle Parked in floor-"+vehicle.getParkingLot().getFloorNo()+" slot-"+vehicle.getParkingLot().getSlotNo() ,vehicle);
+        }
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @DeleteMapping("/unpark/{vehicleNumber}")
+    @DeleteMapping("/exit/{vehicleNumber}")
     public ResponseEntity<ResponseDto> unparkCar(@PathVariable("vehicleNumber") String vehicleNumber){
-
-        ResponseDto responseDto = new ResponseDto("Car Is Unparked!",vehicleService.unParkVehicle(vehicleNumber));
-
+        ResponseDto responseDto;
+        Vehicle vehicle = vehicleService.unParkVehicle(vehicleNumber);
+        if(Objects.isNull(vehicle)){
+            responseDto= new ResponseDto("Please enter correct Vehicle Number","");
+        }
+        else {
+            responseDto =  new ResponseDto("Thanks For Visiting",vehicle,vehicle.getParkingLot());
+        }
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 

@@ -21,32 +21,20 @@ import java.util.Date;
 public class Vehicle {
     @Id
     private String vehicleNumber;
-    private String color;
-    private String model;
-
 
     @Enumerated(value = EnumType.STRING)
-    private CarType carType;
+    private CarType type;
 
-
-    @CreationTimestamp
-    private LocalDateTime inTime;
-
+    public Vehicle(VehicleDTO vehicleDTO) {
+        this.vehicleNumber = vehicleDTO.getVehicleNumber();
+        this.type = vehicleDTO.getType();
+    }
 
     @OneToOne
-    private Slot slot;
-
-    @ManyToOne
+    @JoinColumn(name = "parkingLot_id")
     private ParkingLot parkingLot;
 
-
-
-    public Vehicle(VehicleDTO vehicleDTO){
-        this.vehicleNumber=vehicleDTO.getVehicleNumber();
-        this.color=vehicleDTO.getColor();
-        this.model=vehicleDTO.getModel();
-        this.carType=vehicleDTO.getCarType();
-
-    }
+    @OneToOne
+    private Billing billing;
 
 }

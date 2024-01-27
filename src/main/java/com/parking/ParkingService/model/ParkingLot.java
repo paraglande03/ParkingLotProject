@@ -7,9 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Data
@@ -19,20 +17,21 @@ import java.util.List;
 @Entity
 public class ParkingLot {
     @Id
-    public Integer parkingLotId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Integer id;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "parkingLot")
-    public List<Slot> slots;
+    public String floorNo;
+    public String slotNo;
+    public boolean isEmpty;
 
-
-    @OneToMany(mappedBy = "parkingLot")
-    @JsonIgnore
-    public List<Vehicle> vehicles;
-
-    public ParkingLot(ParkingLotDTO parkingLotDTO){
-        this.parkingLotId= parkingLotDTO.lotId;
-
+    public ParkingLot(ParkingLotDTO parkingLotDTO) {
+        this.floorNo = parkingLotDTO.getFloorNo();
+        this.slotNo = parkingLotDTO.getSlotNo();
+        this.isEmpty = true;
     }
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "parkingLot")
+    private Vehicle vehicle;
 
 }

@@ -12,9 +12,5 @@ import lombok.ToString;
 public class VehicleDTO {
 
     private String vehicleNumber;
-    private String color;
-    private String model;
-    private String slotId;
-    private int lotId;
-    private CarType carType;
+    private CarType type;
 }

@@ -3,27 +3,24 @@ package com.parking.ParkingService.service;
 import com.parking.ParkingService.dto.ResponseDto;
 import com.parking.ParkingService.dto.VehicleDTO;
 import com.parking.ParkingService.exception.ParkingServiceException;
+import com.parking.ParkingService.model.Billing;
+import com.parking.ParkingService.model.CarType;
 import com.parking.ParkingService.model.ParkingLot;
-import com.parking.ParkingService.model.Slot;
 import com.parking.ParkingService.model.Vehicle;
+import com.parking.ParkingService.repository.BillingRepository;
 import com.parking.ParkingService.repository.ParkingLotRepository;
-import com.parking.ParkingService.repository.SlotRepository;
-import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.parking.ParkingService.repository.VehicleRepository;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class VehicleService  implements IVehicleService{
@@ -31,32 +28,73 @@ public class VehicleService  implements IVehicleService{
    @Autowired
    private VehicleRepository vehicleRepository;
 
-   @Autowired
-   private SlotRepository slotRepository;
 
    @Autowired
    private ParkingLotRepository parkingLotRepository;
 
-
+   @Autowired
+   private BillingRepository billingRepository;
 
    @Override
-   public Vehicle addVehicle(VehicleDTO vehicleDTO ){
-
-      Vehicle vehicle = new Vehicle(vehicleDTO);
-
-      Slot slot=slotRepository.findById(vehicleDTO.getSlotId()).orElseThrow();
-      vehicle.setSlot(slot);
-
-      ParkingLot parkingLot =parkingLotRepository.findById(vehicleDTO.getLotId()).orElseThrow(()-> new ParkingServiceException(" VEHICLE IS ALREADY PARKED !"));
-      vehicle.setParkingLot(parkingLot);
-
-      return vehicleRepository.save(vehicle);
+   public Vehicle addVehicle(VehicleDTO vehicleDTO) {
+      Vehicle vehicle =  new Vehicle(vehicleDTO);
+      ParkingLot parkingLot = parkingLotRepository.findEmptyParkingLot();
+      if(Objects.isNull(parkingLot)){
+         return null;
+      }
+      else {
+         parkingLot.setEmpty(false);
+         Billing billing = new Billing();
+         billing.setVehicleId(vehicle.getVehicleNumber());
+         vehicle.setParkingLot(parkingLotRepository.save(parkingLot));
+         vehicle.setBilling( billingRepository.save(billing));
+         vehicle=  vehicleRepository.save(vehicle);
+         return vehicle;
+      }
    }
 
    @Override
    public Vehicle unParkVehicle(String vehicleNumber) {
-      vehicleRepository.deleteById(vehicleNumber);
+      Optional<Vehicle> vehicleOpt = vehicleRepository.findByNumber(vehicleNumber);
+
+      if(vehicleOpt.isPresent()){
+         Vehicle vehicle = vehicleOpt.get();
+         // calculate billing
+         setBillingAmount(vehicle.getBilling().getInTime(), vehicle.getType(), vehicle.getBilling());
+
+         ParkingLot parkingLot = vehicle.getParkingLot();
+         parkingLot.isEmpty=true;
+         parkingLotRepository.save(parkingLot);
+         vehicleRepository.deleteById(vehicleNumber);
+         return vehicle;
+      }
       return null;
+   }
+
+   public void setBillingAmount(LocalDateTime inTime, CarType type, Billing billing){
+      LocalDateTime currentTime = LocalDateTime.now();
+      Duration duration = Duration.between(inTime,currentTime );
+      long minutes = duration.toMinutesPart();
+
+      int charge =0;
+      switch (type){
+         case SUV:
+            charge = (int) (minutes*1.5);
+             break;
+         case HATCH:
+            charge = (int) (minutes);
+            break;
+         case MULTI_AXLE:
+            charge = (int) (minutes*2);
+            break;
+         case TWO_WHEELER:
+            charge = (int) (minutes*0.5);
+            break;
+      }
+      billing.setOutTime(currentTime);
+      billing.setParkedTime(duration.toHours()+" hr"+duration.toMinutes()+" min");
+      billing.setAmount(charge);
+      billingRepository.save(billing);
    }
 
    @Override
@@ -73,29 +111,24 @@ public class VehicleService  implements IVehicleService{
 
    @Override
    public ResponseDto findVehicle(String vehicleId) {
-
-      int lot= vehicleRepository.findById(vehicleId).orElseThrow().getParkingLot().getParkingLotId();
-      String slot=vehicleRepository.findById(vehicleId).orElseThrow().getSlot().getSlotNumber();
-
-      ResponseDto responseDto = new ResponseDto("Parking lot number:"+lot+" Slot number :" +slot)      ;
-
-      return responseDto;
+      return null;
    }
+
 
    @Override
    public ResponseDto parkingCharge(String vehicleId) {
       LocalTime time = LocalTime.now();
 
-      int parkedHr = vehicleRepository.findById(vehicleId).orElseThrow().getInTime().getHour();
-      int parkedTime= (parkedHr*60)+(vehicleRepository.findById(vehicleId).orElseThrow(()-> new ParkingServiceException(" Please enter valid vehicle id")).getInTime().getMinute());
+//      int parkedHr = vehicleRepository.findById(vehicleId).orElseThrow().getInTime().getHour();
+//      int parkedTime= (parkedHr*60)+(vehicleRepository.findById(vehicleId).orElseThrow(()-> new ParkingServiceException(" Please enter valid vehicle id")).getInTime().getMinute());
+//
+//      int unparkHr = time.getHour()*60;
+//
+//      int unparkTime= unparkHr+time.getMinute();
+//
+//      int totalparkedTime = unparkTime-parkedTime;
 
-      int unparkHr = time.getHour()*60;
-
-      int unparkTime= unparkHr+time.getMinute();
-
-      int totalparkedTime = unparkTime-parkedTime;
-
-      return new ResponseDto(totalparkedTime+" minutes!" );
+      return new ResponseDto(" minutes!" );
 
 
    }
@@ -128,8 +161,9 @@ public class VehicleService  implements IVehicleService{
 
       List<Vehicle> vehiclesAll = vehicleRepository.findAll();
 
-      List<Vehicle> matchingObject = vehiclesAll.stream().
-              filter(p -> p.getInTime().plusMinutes(minutes).isAfter(currentTime)).collect(Collectors.toList());
+      List<Vehicle> matchingObject = null;
+//              vehiclesAll.stream().
+//              filter(p -> p.getInTime().plusMinutes(minutes).isAfter(currentTime)).collect(Collectors.toList());
 
       return matchingObject;
 

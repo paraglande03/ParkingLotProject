@@ -1,5 +1,5 @@
 package com.parking.ParkingService.model;
 
 public enum CarType {
-    small , large
+    SUV , HATCH , MULTI_AXLE, TWO_WHEELER
 }

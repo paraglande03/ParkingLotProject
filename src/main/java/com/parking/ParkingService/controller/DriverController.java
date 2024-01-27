@@ -2,11 +2,14 @@ package com.parking.ParkingService.controller;
 
 import com.parking.ParkingService.dto.ResponseDto;
 import com.parking.ParkingService.dto.VehicleDTO;
+import com.parking.ParkingService.model.Vehicle;
 import com.parking.ParkingService.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/driver")
@@ -26,8 +29,15 @@ public class DriverController {
     @PostMapping("/park")
     public ResponseEntity<ResponseDto> parkVehicle(@RequestBody VehicleDTO vehicleDTO){
 
-        ResponseDto responseDto=new ResponseDto("Vehicle Parked in Lot "+vehicleDTO.getLotId()+" slot "+ vehicleDTO.getSlotId() ,vehicleService.addVehicle(vehicleDTO));
-        return  new   ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+        Vehicle vehicle = vehicleService.addVehicle(vehicleDTO);
+        ResponseDto responseDto;
+        if(Objects.isNull(vehicle)){
+             responseDto=new ResponseDto("Sorry Currently there are not parking spaces left " ,"Lava Kuthapn");
+        }
+        else {
+             responseDto=new ResponseDto("Vehicle Parked in Lot " ,vehicle);
+        }
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @GetMapping("/find/{vehicleId}")
