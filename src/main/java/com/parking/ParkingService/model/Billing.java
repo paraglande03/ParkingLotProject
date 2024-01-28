@@ -15,6 +15,7 @@ public class Billing {
     public Integer id;
 
     @CreationTimestamp
+    @JsonIgnore
     private LocalDateTime inTime;
 
     private LocalDateTime outTime;
@@ -24,5 +25,7 @@ public class Billing {
     private int amount;
 
     private String vehicleId;
+
+    private String inTimeString;
 
 }

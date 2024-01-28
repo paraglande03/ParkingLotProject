@@ -74,7 +74,7 @@ public class VehicleService  implements IVehicleService{
    public void setBillingAmount(LocalDateTime inTime, CarType type, Billing billing){
       LocalDateTime currentTime = LocalDateTime.now();
       Duration duration = Duration.between(inTime,currentTime );
-      long minutes = duration.toMinutesPart();
+      long minutes = duration.toMinutes();
 
       int charge =0;
       switch (type){
@@ -92,7 +92,7 @@ public class VehicleService  implements IVehicleService{
             break;
       }
       billing.setOutTime(currentTime);
-      billing.setParkedTime(duration.toHours()+" hr"+duration.toMinutes()+" min");
+      billing.setParkedTime(duration.toHoursPart()+" hr"+duration.toMinutesPart()+" min");
       billing.setAmount(charge);
       billingRepository.save(billing);
    }
