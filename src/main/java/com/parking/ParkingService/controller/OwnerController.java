@@ -75,7 +75,7 @@ public class OwnerController {
         ResponseDto responseDto;
         Vehicle vehicle = vehicleService.unParkVehicle(vehicleNumber);
         if(Objects.isNull(vehicle)){
-            responseDto= new ResponseDto("Please enter correct Vehicle Number","");
+            responseDto= new ResponseDto("Please enter correct Vehicle Number","","");
         }
         else {
             responseDto =  new ResponseDto("Thanks For Visiting",vehicle,vehicle.getParkingLot());
@@ -93,8 +93,20 @@ public class OwnerController {
     public ResponseEntity<ResponseDto> parkingCharge(@PathVariable("vehicleId") String vehicleId){
         ResponseDto responseDto = new ResponseDto("Total parking time is : ", vehicleService.parkingCharge(vehicleId));
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
+    }
 
+    @GetMapping("/parkingLots")
+    public ResponseEntity<ResponseDto> getAllParkingLots(){
+        List<ParkingLot> parkingLots = parkingLotService.getAllParkingLots();
+        ResponseDto responseDto = new ResponseDto("These are Parking Spaces you have!",parkingLots);
+        return new ResponseEntity<>(responseDto,HttpStatus.OK);
+    }
 
+    @GetMapping("/getVehicleByParkingLot/{lotId}")
+    public  ResponseEntity<ResponseDto> getVehicleByParkingLot(@PathVariable("lotId")int id){
+        Vehicle vehicle = vehicleService.getVehicleByLotId(id);
+        ResponseDto responseDto = new ResponseDto("This is the Vehicle Parked",vehicle);
+        return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
 
 

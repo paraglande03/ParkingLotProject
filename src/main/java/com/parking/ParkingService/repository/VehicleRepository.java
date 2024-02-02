@@ -25,6 +25,8 @@ public interface VehicleRepository extends JpaRepository<Vehicle, String> {
     @Query(value = " select * from vehicle where model = :model ",nativeQuery = true)
     List<Vehicle> findByModel(String model);
 
+    @Query(value = " select * from vehicle where parking_lot_id = :number ",nativeQuery = true)
+    Optional<Vehicle> findByParkingLotId(int number);
 //
 //    @Query(value = " select * from vehicle  v where v.in_time >= compareTime",nativeQuery = true)
 //    List<Vehicle> getCarsByTime( int compareTime);

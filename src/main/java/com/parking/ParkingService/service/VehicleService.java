@@ -37,6 +37,7 @@ public class VehicleService  implements IVehicleService{
 
    @Override
    public Vehicle addVehicle(VehicleDTO vehicleDTO) {
+
       Vehicle vehicle =  new Vehicle(vehicleDTO);
       ParkingLot parkingLot = parkingLotRepository.findEmptyParkingLot();
       if(Objects.isNull(parkingLot)){
@@ -79,22 +80,45 @@ public class VehicleService  implements IVehicleService{
       int charge =0;
       switch (type){
          case SUV:
-            charge = (int) (minutes*1.5);
+            charge = getChargeByType(minutes,100,30);
              break;
          case HATCH:
-            charge = (int) (minutes);
+            charge = getChargeByType(minutes,80,20);
             break;
          case MULTI_AXLE:
-            charge = (int) (minutes*2);
+            charge = getChargeByType(minutes,150,50);
             break;
          case TWO_WHEELER:
-            charge = (int) (minutes*0.5);
+            charge = getChargeByType(minutes,50,10);;
             break;
       }
+
+
       billing.setOutTime(currentTime);
       billing.setParkedTime(duration.toHoursPart()+" hr"+duration.toMinutesPart()+" min");
       billing.setAmount(charge);
       billingRepository.save(billing);
+   }
+
+
+   public int getChargeByType(long minutes,int initialRateFor3Hrs,int rateAfter3Hrs){
+         int charge =0;
+
+               if(minutes<=180){
+                  charge = initialRateFor3Hrs;
+               }
+               else {
+                  charge = initialRateFor3Hrs;
+                  minutes = minutes-180;
+
+                  int hours = (int) (minutes/60);
+                  int rem = (int) (minutes%60);
+                  if(rem>0){
+                     hours=hours+1;
+                  }
+                  charge = charge + (rateAfter3Hrs*hours);
+               }
+       return charge;
    }
 
    @Override
@@ -167,17 +191,13 @@ public class VehicleService  implements IVehicleService{
 
       return matchingObject;
 
-
-
-
-
-
-
-
-
-
-
    }
+
+   public Vehicle getVehicleByLotId(int id) {
+    Optional<Vehicle> vehicleOptional = vehicleRepository.findByParkingLotId(id);
+       return vehicleOptional.orElse(null);
+   }
+
 
 
 }
