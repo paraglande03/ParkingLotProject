@@ -28,8 +28,14 @@ public class Vehicle {
     public Vehicle(VehicleDTO vehicleDTO) {
         this.vehicleNumber = vehicleDTO.getVehicleNumber();
         this.type = vehicleDTO.getType();
+        this.ownerName= vehicleDTO.getOwnerName();
+        this.ownerNumber="+91"+vehicleDTO.getOwnerNumber();
     }
 
+    private String ownerName;
+    private String ownerNumber;
+    @JsonIgnore
+    private boolean isNewCustomer;
     @OneToOne
     @JoinColumn(name = "parkingLot_id")
     private ParkingLot parkingLot;

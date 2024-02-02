@@ -65,7 +65,13 @@ public class OwnerController {
             responseDto=new ResponseDto("Sorry Currently there are no parking spaces left " ,"Lava Kuthapn");
         }
         else {
-            responseDto=new ResponseDto("Vehicle Parked in floor-"+vehicle.getParkingLot().getFloorNo()+" slot-"+vehicle.getParkingLot().getSlotNo() ,vehicle);
+            if(vehicle.isNewCustomer()){
+                responseDto=new ResponseDto("Vehicle Parked in floor-"+vehicle.getParkingLot().getFloorNo()+" slot-"+vehicle.getParkingLot().getSlotNo() ,vehicle);
+
+            }
+            else {
+                responseDto=new ResponseDto("Vehicle is already Parked in space!",vehicle);
+            }
         }
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }

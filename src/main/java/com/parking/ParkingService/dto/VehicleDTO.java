@@ -13,4 +13,6 @@ public class VehicleDTO {
 
     private String vehicleNumber;
     private CarType type;
+    private String ownerName;
+    private String ownerNumber;
 }

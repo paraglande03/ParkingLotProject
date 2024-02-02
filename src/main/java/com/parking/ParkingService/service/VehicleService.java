@@ -28,6 +28,8 @@ public class VehicleService  implements IVehicleService{
    @Autowired
    private VehicleRepository vehicleRepository;
 
+   @Autowired
+   private NotificationService notificationService;
 
    @Autowired
    private ParkingLotRepository parkingLotRepository;
@@ -44,12 +46,21 @@ public class VehicleService  implements IVehicleService{
          return null;
       }
       else {
-         parkingLot.setEmpty(false);
-         Billing billing = new Billing();
-         billing.setVehicleId(vehicle.getVehicleNumber());
-         vehicle.setParkingLot(parkingLotRepository.save(parkingLot));
-         vehicle.setBilling( billingRepository.save(billing));
-         vehicle=  vehicleRepository.save(vehicle);
+         Optional<Vehicle> vehicleOptional = vehicleRepository.findByNumber(vehicle.getVehicleNumber());
+         if(vehicleOptional.isPresent()){
+            vehicle = vehicleOptional.get();
+            vehicle.setNewCustomer(false);
+         }
+         else {
+
+            vehicle.setNewCustomer(true);
+            parkingLot.setEmpty(false);
+            Billing billing = new Billing();
+            billing.setVehicleId(vehicle.getVehicleNumber());
+            vehicle.setParkingLot(parkingLotRepository.save(parkingLot));
+            vehicle.setBilling( billingRepository.save(billing));
+            vehicle=  vehicleRepository.save(vehicle);
+         }
          return vehicle;
       }
    }
@@ -62,11 +73,11 @@ public class VehicleService  implements IVehicleService{
          Vehicle vehicle = vehicleOpt.get();
          // calculate billing
          setBillingAmount(vehicle.getBilling().getInTime(), vehicle.getType(), vehicle.getBilling());
-
          ParkingLot parkingLot = vehicle.getParkingLot();
          parkingLot.isEmpty=true;
          parkingLotRepository.save(parkingLot);
          vehicleRepository.deleteById(vehicleNumber);
+         notificationService.sendBilling(vehicle.getBilling(),vehicle);
          return vehicle;
       }
       return null;
