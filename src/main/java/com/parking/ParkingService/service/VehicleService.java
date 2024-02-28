@@ -1,5 +1,6 @@
 package com.parking.ParkingService.service;
 
+import com.ctc.wstx.util.StringUtil;
 import com.parking.ParkingService.dto.ResponseDto;
 import com.parking.ParkingService.dto.VehicleDTO;
 import com.parking.ParkingService.exception.ParkingServiceException;
@@ -77,7 +78,7 @@ public class VehicleService  implements IVehicleService{
          parkingLot.isEmpty=true;
          parkingLotRepository.save(parkingLot);
          vehicleRepository.deleteById(vehicleNumber);
-         notificationService.sendBilling(vehicle.getBilling(),vehicle);
+            notificationService.sendBilling(vehicle.getBilling(),vehicle);
          return vehicle;
       }
       return null;

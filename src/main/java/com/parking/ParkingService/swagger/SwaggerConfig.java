@@ -35,8 +35,8 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder().title("Parking Service API")
-                .description("Parag Parking service api documentations")
-                .termsOfServiceUrl("Parag Lande")
+                .description("APIs for parking lot management.")
+                .termsOfServiceUrl("")
                 .build();
     }
 }

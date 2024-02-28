@@ -42,7 +42,7 @@ public class DriverController {
 
     @GetMapping("/find/{vehicleId}")
     public ResponseEntity<ResponseDto> findVehicle(@PathVariable("vehicleId") String vehicleId){
-        ResponseDto responseDto =new ResponseDto(" Your vehicle is parked Here: ",vehicleService.findVehicle(vehicleId));
+        ResponseDto responseDto =new ResponseDto("Your vehicle is parked Here: ",vehicleService.findVehicle(vehicleId));
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
 }
